@@ -1,10 +1,18 @@
 # Motivating examples
 
-This chapter presents two familiar examples.
+This chapter presents two familiar examples.  Note that each example is accompanied with a programming task.
 
 ## Nearby items
 
-Let's start by thinking about the PokemonGo.  You walk around and some monster near you shows up so that you can try to capture it.  Finding nearby monsters for every user is a classic example of a nearest neighbor search problem.  In this problem you are given two types of objects, monsters and players, and a radius $$R$$ and you want to find, for a given player, all monsters which are within distance $$R$$ from this player.
+Let's start by thinking about the PokemonGo.  You walk around and some monster near you shows up so that you can try to capture it.  In an actual app, the app on your phone should receive a set of monsters close to your location and decides (locally) which monsters to show to you.  Since every player shares the same set of appearing monsters, the server has to figure out, for each player, this set of nearby monsters.
+
+Finding nearby monsters for every user is a classic example of a nearest neighbor search problem.  In this problem you are given two types of objects, monsters and players, and a radius $$R$$ and you want to find, for a given player, all monsters which are within distance $$R$$ from this player.
+
+**Related task:** [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search)
+
+To encourage the reader to think about the problems, try out various solutions, and experiment with the running times, we usually provide a programming task formulated from a problem like this one.  Head to the task [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search) to read the task statement and try to implement a solution before you read further.
+
+### First attempt
 
 A simple solution for this problem is the following.
 
@@ -69,8 +77,64 @@ Let's try to put everything into places.  (Note that our main program reads the 
 
 The following table summarizes the running time when for various values of $$n$$ (assuming that $$m=n$$).
 
+| $$n$$        | Running time |
+| ------------ | ------------ |
+| 10           |              |
+| 100          |              |
+| 1000         |              |
+| 10000        |              |
+| 20000        |              |
+| 30000        |              |
+
+We can plot the running times agaist $n$, which is essentially the size of the problem.
+
+TODO: graph + discussion on the quadratic running time
+
+### The limits
+
+### Can we do better?
+
+Data partitioning is the answer.
+
 ## Storing comments
 
+The second problem we shall consider is about how to display comments in an on-line forum (or a Facebook status).  Modern forum software allows users to post comments to comments.  While many systems, like Facebook, do not allow you to post comments to comments of a comments (i.e., the level of comments is only two), we consider a more general commenting structure, where any comments can have comments.  In this case, you end up with a situation like forums like Reddit or Hacker News, where users keep posting comments and you have to display these comments nicely, showing clearly the "nested" structure of the comments.
+
+Let's start with an example.  Suppose we have 7 comments, each comment has a unique ID.
+
+| ID     | Reply to ID  | Messages   |
+|--------|--------------|--------------------|
+| 1      | status | hello world |
+| 2 | status | this is another comment |
+| 3 | 1 | first reply |
+| 4 | 2 | good morning thailand |
+| 5 | 1 | second one |
+| 6 | 1 | third one |
+| 7 | 5 | when it is ok |
+
+When two comments reply to the same comment, you want to show the later one (with higher ID) later.  The following is a possible way to display the comments (showing the nested structure).
+
+```
+- 1 hello world
+  - 3 first reply
+  - 5 second one
+    - 7 when it is ok
+  - 6 third one
+- 2 this is another comment
+  - 4 good morning thailand
+```
+
+**Related task:** [Status comments](ch1_tasks.md#tasks-ch1-comments)
+
+### Nested comments: diving in
+
+### Going back
+
+### Build before print
+
+### Same problem, different instances
+
+### A recursive approach
 
 ## Analyzing performance
 
