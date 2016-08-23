@@ -1,26 +1,48 @@
 # Motivating examples
 
-This chapter presents two familiar examples.  Note that each example is accompanied with a programming task.
+This chapter presents two familiar examples.  Note that each example
+is accompanied with a programming task.
 
 ## Nearby items
 
-Let's start by thinking about the PokemonGo.  You walk around and some monster near you shows up so that you can try to capture it.  In an actual app, the app on your phone should receive a set of monsters close to your location and decides (locally) which monsters to show to you.  Since every player shares the same set of appearing monsters, the server has to figure out, for each player, this set of nearby monsters.
+Let's start by thinking about the PokemonGo.  You walk around and some
+monster near you shows up so that you can try to capture it.  In an
+actual app, the app on your phone should receive a set of monsters
+close to your location and decides (locally) which monsters to show to
+you.  Since every player shares the same set of appearing monsters,
+the server has to figure out, for each player, this set of nearby
+monsters.
 
-Finding nearby monsters for every user is a classic example of a nearest neighbor search problem.  In this problem you are given two types of objects, monsters and players, and a radius $$R$$ and you want to find, for a given player, all monsters which are within distance $$R$$ from this player.
+Finding nearby monsters for every user is a classic example of a
+nearest neighbor search problem.  In this problem you are given two
+types of objects, monsters and players, and a radius $$R$$ and you
+want to find, for a given player, all monsters which are within
+distance $$R$$ from this player.
 
 **Related task:** [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search)
 
-To encourage the reader to think about the problems, try out various solutions, and experiment with the running times, we usually provide a programming task formulated from a problem like this one.  Head to the task [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search) to read the task statement and try to implement a solution before you read further.
+To encourage the reader to think about the problems, try out various
+solutions, and experiment with the running times, we usually provide a
+programming task formulated from a problem like this one.  Head to the
+task [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search) to read the
+task statement and try to implement a solution before you read
+further.
 
 ### First attempt
 
 A simple solution for this problem is the following.
 
-> For a given player $$p$$, you can iterate through all active monsters, compute the distances, and report all monsters within the good radius.
+> For a given player $$p$$, you can iterate through all active
+  monsters, compute the distances, and report all monsters within the
+  good radius.
 
-This looks fairly simple.  But if you have a lot of active users and a lot of monsters, it may require a lot of work.  Let's write a simple program to test the limits of this straight-forward idea.
+This looks fairly simple.  But if you have a lot of active users and a
+lot of monsters, it may require a lot of work.  Let's write a simple
+program to test the limits of this straight-forward idea.
 
-We shall assume that we only know how to use arrays.  Therefore, in this example to simplify the code, we will only count the number of nearby monsters for a player $$p$$.
+We shall assume that we only know how to use arrays.  Therefore, in
+this example to simplify the code, we will only count the number of
+nearby monsters for a player $$p$$.
 
 ```java
 	private static int countNearbyMonsters(Player p, Monster [] monsters, double radius) {
@@ -36,13 +58,26 @@ We shall assume that we only know how to use arrays.  Therefore, in this example
 
 ### How to test the performance
 
-We have a simple method implementing our first idea for the nearby monster search algorithm.  The next step is to test its performance.  We will do that by running the algorithm against a set of test data and measure the running times.
+We have a simple method implementing our first idea for the nearby
+monster search algorithm.  The next step is to test its performance.
+We will do that by running the algorithm against a set of test data
+and measure the running times.
 
-We still have to think about the kind of test data we want to use and how to obtain them.  Since we want test data to represent real-world usage, if we can collect them in actual usages of the algorithm that would be best.  Since this is not possible, we have to settle with synthetically generated data.  Here, we will generate monsters and players randomly, assuming that they are likely to appear anywhere on the map.
+We still have to think about the kind of test data we want to use and
+how to obtain them.  Since we want test data to represent real-world
+usage, if we can collect them in actual usages of the algorithm that
+would be best.  Since this is not possible, we have to settle with
+synthetically generated data.  Here, we will generate monsters and
+players randomly, assuming that they are likely to appear anywhere on
+the map.
 
-Also, if we look at the method, there is another parameter we have to think about: the radius $$r$$.  Since the running time of this algorithm does not depend on $$r$$, we can use any number.
+Also, if we look at the method, there is another parameter we have to
+think about: the radius $$r$$.  Since the running time of this
+algorithm does not depend on $$r$$, we can use any number.
 
-Let's try to put everything into places.  (Note that our main program reads the number of players and monsters from the command-line arguments.)
+Let's try to put everything into places.  (Note that our main program
+reads the number of players and monsters from the command-line
+arguments.)
 
 ```java
 	private static Monster[] randomMonster(int m) {
@@ -75,7 +110,8 @@ Let's try to put everything into places.  (Note that our main program reads the 
 
 ```
 
-The following table summarizes the running time when for various values of $$n$$ (assuming that $$m=n$$).
+The following table summarizes the running time when for various
+values of $$n$$ (assuming that $$m=n$$).
 
 | $$n$$        | Running time |
 | ------------ | ------------ |
@@ -86,7 +122,8 @@ The following table summarizes the running time when for various values of $$n$$
 | 20000        |              |
 | 30000        |              |
 
-We can plot the running times agaist $n$, which is essentially the size of the problem.
+We can plot the running times agaist $n$, which is essentially the
+size of the problem.
 
 TODO: graph + discussion on the quadratic running time
 
@@ -98,9 +135,19 @@ Data partitioning is the answer.
 
 ## Storing comments
 
-The second problem we shall consider is about how to display comments in an on-line forum (or a Facebook status).  Modern forum software allows users to post comments to comments.  While many systems, like Facebook, do not allow you to post comments to comments of a comments (i.e., the level of comments is only two), we consider a more general commenting structure, where any comments can have comments.  In this case, you end up with a situation like forums like Reddit or Hacker News, where users keep posting comments and you have to display these comments nicely, showing clearly the "nested" structure of the comments.
+The second problem we shall consider is about how to display comments
+in an on-line forum (or a Facebook status).  Modern forum software
+allows users to post comments to comments.  While many systems, like
+Facebook, do not allow you to post comments to comments of a comments
+(i.e., the level of comments is only two), we consider a more general
+commenting structure, where any comments can have comments.  In this
+case, you end up with a situation like forums like Reddit or Hacker
+News, where users keep posting comments and you have to display these
+comments nicely, showing clearly the "nested" structure of the
+comments.
 
-Let's start with an example.  Suppose we have 7 comments, each comment has a unique ID.
+Let's start with an example.  Suppose we have 7 comments, each comment
+has a unique ID.
 
 | ID     | Reply to ID  | Messages   |
 |--------|--------------|--------------------|
@@ -112,7 +159,9 @@ Let's start with an example.  Suppose we have 7 comments, each comment has a uni
 | 6 | 1 | third one |
 | 7 | 5 | when it is ok |
 
-When two comments reply to the same comment, you want to show the later one (with higher ID) later.  The following is a possible way to display the comments (showing the nested structure).
+When two comments reply to the same comment, you want to show the
+later one (with higher ID) later.  The following is a possible way to
+display the comments (showing the nested structure).
 
 ```
 - 1 hello world
@@ -124,17 +173,136 @@ When two comments reply to the same comment, you want to show the later one (wit
   - 4 good morning thailand
 ```
 
+This problem looks easy at first, but it take a lot of thinking to get
+everything right.  We will try to tackle it using many approaches.
+But before that, it will be very useful if the reader would stop for a
+few minutes to think about the problem.  Also, it would be great to
+try to solve it before moving on to see the solutions.  Check out the
+task: [Status comments](ch1_tasks.md#tasks-ch1-comments).
+
 **Related task:** [Status comments](ch1_tasks.md#tasks-ch1-comments)
 
-### Nested comments: diving in
+In what follows, we shall discuss three approaches for solving this
+task.  Your answer may fall into one of these approaches. The first
+two use only basic iterative techniques.
 
-### Going back
+### First solution: direct printing (very complicated)
+#### Nested comments: diving in
 
-### Build before print
+The first solution uses a direct approach.  Let's begin by looking at
+the example.  Note that when you want to print comment 1, you need to
+pull every comment that replies to comment 1; in this case comments
+3,5, and 6.  Furthermore, when you want to print comment 5, you need
+to pull comment 7 that replies to it.  (This is true for comment 3,
+but it has no replies.)
 
-### Same problem, different instances
+We shall start by writing a method for looking up the $$j$$-th comment
+that replies to the $$i$$-th comment, or return `null` if it does not
+exist.  For example the 1-st comment that replies to comment 5, is
+comment 7.  
+
+```java
+	private static Comment findReplyingComment(int i, int j, int n, Comment[] comments) {
+		int c = 0;
+		for(int k=0; k<n; k++) {
+			if(comments[k].getParentId() == i) {
+				c++;
+				if(c==j) {
+					return comments[k];
+				}
+			}
+		}
+		return null;
+	}
+```
+
+Note that this is enough to get us started.  I.e., if we start
+by following the chain of replying comments, we can start the comment
+report, as shown in the following code.
+
+```java
+	Comment currentComment = null;
+	currentComment = findReplyingComment(0, 1, n, comments);
+	while(currentComment != null) {
+		printComment(currentComment);
+		Comment replyingComment = findReplyingComment(currentComment.getId(), 1,
+		                                              n, comments);
+		currentComment = replyingComment;
+	}
+```
+
+However, when we cannot find deeper comments, we need to be able to
+"back off".  For example, we may start by printing comment 1, then
+follow its replies to get comment 3.  But for the next step, when
+`findReplyingComment(3,1,...)` returns `null`, you have to back off,
+and return to finding the 2nd replying comment to comment 1.
+
+#### Going back
+
+To be able to do so, we need a lot of book keepings.  Let's think for
+a moment.  When we finish calling
+
+```java
+    findReplyingComment(3,1,...)
+```
+
+the next call would be
+
+```java
+    findReplyingComment(1,2,...)
+```
+
+I.e., we need to know the comment $$p$$, later referred to as a parent
+comment, on the upper level (to get back to) and $$p$$'s next reply
+number.  The quick and dirty solution would be as follows.
+
+```java
+		currentComment = findReplyingComment(0, 1, n, comments);
+		while(currentComment != null) {
+			printComment(currentComment);
+			Comment replyingComment = findReplyingComment(currentComment.getId(), 1,
+			                                              n, comments);
+			
+			if(replyingComment != null) {
+				parentComment = currentComment;
+				parentReplyNumber = 1;
+				
+				currentComment = replyingComment;
+			} else {
+				currentComment = findReplyingComment(parentComment.getId(),
+				                                     parentReplyNumber,
+				                                     n, comments);
+				parentReplyNumber += 1;
+			}
+		}
+
+```
+
+But this does not work correctly when you have to back off for many
+levels.  Think of the case when we finish printing comment 7.  Knowing
+that keeping only one level of parent comments is not enough, we have
+to maintain parents for all levels.  This is clearly something that we
+should be happy to do because we will know, as a by product, the
+indent level of each comment as well.  Thus, we keep
+
+```java
+		Comment [] parentComments = new Comment[n];
+		int parentReplyNumbers = new int[n];
+		int parentCount = 0;
+```
+
+and every time, we descend to print any replies of comment $$i$$, we
+save comment $$i$$ to `parentComments`, the reply number to
+`parentReplyNumbers`, and update `parentCount`.  We also have to make
+sure that our `while` loop handle descending and backing off procedure
+correctly.
+
+
+### Second solution: Build before print
 
 ### A recursive approach
+
+### Looking back: code reuse and class extraction
 
 ## Analyzing performance
 

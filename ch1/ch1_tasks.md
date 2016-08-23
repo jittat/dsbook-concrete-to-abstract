@@ -26,7 +26,7 @@ You are given an information on how comments are posted. You want to display the
 **Input**
 
 * First line: integer $$n$$ (the number of comments)
-* The next $$n$$ lines, each line specify a comment. Line $$i + 1$$ for $$1\leq i\leq n$$ specifies the $$i$$-th comment. In this line, there is an integer $$p$$ ($$p \lt i$$) and a string $$s$$ (consiting of alphabets `a` - `z` and an underline (`_`) whose length is at most 30). This comment replies to the $$p$$-th comment. If $$p=0$$, this comment replies to the status itself. The string $$s$$ is the comment text. 
+* The next $$n$$ lines, each line specify a comment. Line $$i + 1$$ for $$1\leq i\leq n$$ specifies the $$i$$-th comment. In this line, there is an integer $$p$$ ($$p \lt i$$) and a string $$s$$ (consiting of alphabets `a` - `z`, `A` - `Z`, and an underline (`_`) whose length is at most 30). This comment replies to the $$p$$-th comment. If $$p=0$$, this comment replies to the status itself. The string $$s$$ is the comment text. 
 
 **Input example**
 
