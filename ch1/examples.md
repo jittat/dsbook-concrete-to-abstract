@@ -300,7 +300,7 @@ correctly.
 TODO: complete this section
 
 
-### Second solution: Build before print
+### Second solution: Build before print {#ch1-status-sol2}
 
 The reason why the previous approach is fairly difficult is because we
 have to make sure that everything is printed in the right order.  It
@@ -341,6 +341,8 @@ The general structure of the method (with some step left out) is as follows.
 ```
 
 Let's fill out all the code.
+
+TODO: explain this code. make sure to note that when p=0, lastPos is intentionally -1
 
 ```java
 	private static void printComment(int n, Comment[] comments) {
@@ -492,10 +494,3 @@ straight-forward.  We will discuss more about recursion, when we deals
 with data structures like binary trees and recursive algorithms such
 as Quick Sort and Merge Sort.
 
-### Looking back: code reuse and class extraction
-
-## Analyzing performance
-
-### What should we leave out from the equations?
-
-### The big-$$O$$ notation
