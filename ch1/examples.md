@@ -297,10 +297,97 @@ save comment $$i$$ to `parentComments`, the reply number to
 sure that our `while` loop handle descending and backing off procedure
 correctly.
 
+TODO: complete this section
+
 
 ### Second solution: Build before print
 
+The reason why the previous approach is fairly difficult is because we
+have to make sure that everything is printed in the right order.  It
+can be much easier to have some extra freedom to work on the output
+before printing.  We keep the output in an array.
+
+```java
+		Comment[] sortedComments = new Comment[n];
+		int sortedCount = 0;
+```
+
+TODO: work out this section
+
+By inserting comments into `sortedComments` in the correct order, we
+can prepare the output array for easy printing.  However, it is still
+hard to find out the right place to put a particular comment.  
+
+We use another observation in the code below that only prints all the
+comments in the correct order with no indent.
+
+```java
+	private static void printComment(int n, Comment[] comments) {
+		Comment[] sortedComments = new Comment[n];
+		int sortedCount = 0;
+		
+		for(int p=0; p<n; p++) {
+			int lastPos = -1;
+			boolean isFirstChild = true;
+			
+			for(int i=0; i<n; i++) {
+				if(comments[i].getParentId() == p) {
+					if(isFirstChild) {
+						for(int j=0; j<sortedCount; j++) {
+							if(sortedComments[j].getId() == p) {
+								lastPos = j;
+								break;
+							}
+						}
+					}
+					
+					int pos = lastPos + 1;
+					for(int j=sortedCount - 1; j>=pos; j--) {
+						sortedComments[j+1] = sortedComments[j];
+					}
+					sortedComments[pos] = comments[i];
+					sortedCount++;
+					
+					lastPos = pos;
+					isFirstChild = false;
+				}
+			}
+		}
+		
+		for(int i=0; i<n; i++) {
+			System.out.println("- " + sortedComments[i].getId() + 
+			                   " " + sortedComments[i].getMsg());
+		}
+	}
+```
+
+Printing with correct indentation is left as an exercise to the reader.
+
 ### A recursive approach
+
+```java
+	private static void printComment(int n, Comment[] comments) {
+		for(int i=0; i<n; i++) {
+			if(comments[i].getParentId() == 0) {
+				printCommentsFor(i, 0, n, comments);
+			}
+		}
+	}
+
+	private static void printCommentsFor(int i, int level,
+	                                     int n, Comment[] comments) {
+		for(int j=0; j<level; j++) {
+			System.out.print("  ");
+		}
+		System.out.println("- " + comments[i].getId() +
+		                   " " + comments[i].getMsg());
+		for(int j=0; j<n; j++) {
+			if(comments[j].getParentId() == comments[i].getId()) {
+				printCommentsFor(j, level+1, n, comments);
+			}
+		}
+	}
+```
 
 ### Looking back: code reuse and class extraction
 
