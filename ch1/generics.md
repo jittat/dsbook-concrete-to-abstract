@@ -179,4 +179,113 @@ public class CommentArray {
 
 ### Generics
 
+If we look at class `CommentArray`, with an exception of method
+`findById`, all method implementations do not depend on the specific
+class `Comment`.  If we want this class to work for any types of
+objects, we can change `Comment` type to `Object`, which is the base
+class of every objects in Java.  Since every object can be "down"
+casted to `Object`, our `CommentArray` can take any objects.
 
+We should rename the class as well.  Let's call it `InsertableArray`.
+We also rename `comments` to `items`.  The skeleton of the code is as
+follows.
+
+```java
+public class InsertableArray {
+
+	private Object[] items;
+        private int itemCount;
+	// ...
+
+	public InsertableArray(int size) {
+		this.items = new Object[size];
+                this.itemCount = 0;
+		// ...
+	}
+	
+	public int findById(int p) {
+		// ... ** currently broken **
+	}
+	
+	public void insert(int i, Object item) {
+		// ...
+	}
+
+	public Object get(int i) {
+		// ...
+	}
+}
+```
+
+By down casting, you allow this class to work with all types of
+objects.  This purely object-oriented implementation style is the
+approach taken by early versions of Java.  This poses an important
+problem with real usage of the class.  Take a look at this example:
+
+```java
+    InsertableArray arr = new InsertableArray();
+    Dog d = new Dog();
+    Cat c = new Cat();
+
+    arr.insert(0, d);          // you can insert any class of objects
+    arr.insert(0, c);
+
+    Cat c = (Cat) arr.get(1);  // needs up casting + run-time check.
+```
+
+TODO: give introduction to generics here
+
+```java
+public class InsertableArray<T> {
+
+	private T[] items;
+	private int itemCount;
+	private int size;
+
+	@SuppressWarnings("unchecked")
+	public InsertableArray(int size) {
+		this.items = (T[]) new Object[size];  // ***
+		this.size = size;
+		this.itemCount = 0;
+	}
+	
+	public void insert(int i, T comment) {
+		for(int j=itemCount - 1; j >= i; j--) {
+			items[j + 1] = items[j];
+		}
+		items[i] = comment;
+		itemCount++;
+	}
+
+
+	public T get(int i) {
+		return items[i];
+	}
+
+}
+```
+
+TODO: discuss the up casting + supresswarning
+
+#### Functional interfaces and lambda expressions
+
+```java
+	public int findIndexBy(Predicate<T> cond) {
+		for(int i=0; i<itemCount; i++) {
+			if(cond.test(items[i])) {
+				return i;
+			}
+		}
+		return -1;
+	}
+```
+
+Usage with lambda expression.
+
+```java
+	// ...
+	if(isFirstChild) {
+		lastPos = sortedComments.findIndexBy((Comment c) -> (c.getParentId() == p));
+	}
+	// ...
+```
