@@ -319,7 +319,28 @@ can prepare the output array for easy printing.  However, it is still
 hard to find out the right place to put a particular comment.  
 
 We use another observation in the code below that only prints all the
-comments in the correct order with no indent.
+comments in the correct order with no indent.  TODO: MORE HERE
+
+The general structure of the method (with some step left out) is as follows.
+
+```java
+	private static void printComment(int n, Comment[] comments) {
+		Comment[] sortedComments = new Comment[n];
+		int sortedCount = 0;
+		
+		for(int p=0; p<n; p++) {
+			for(int i=0; i<n; i++) {
+				if(comments[i].getParentId() == p) {
+					// put comments[i] in sortedComments in the right order
+				}
+			}
+		}
+		
+		// print all comments in sortedComments
+	}
+```
+
+Let's fill out all the code.
 
 ```java
 	private static void printComment(int n, Comment[] comments) {
@@ -363,31 +384,113 @@ comments in the correct order with no indent.
 
 Printing with correct indentation is left as an exercise to the reader.
 
-### A recursive approach
+### The third solution: a recursive approach
+
+The last solution is probably the simplest and the most elegant.  The
+idea is also simple and natural.  But if you have bad experience with
+recursion before, please try to forget that for a moment.
+
+We start by asking this question: what do we have to do to print
+comment $$i$$?
+
+The answer is: we have to print a line with the body of comment $$i$$
+and then print all comments $$j$$ replying to comment $$i$$.
+
+This gives a fairly straight-forward implementation of `printComment`.
 
 ```java
-	private static void printComment(int n, Comment[] comments) {
-		for(int i=0; i<n; i++) {
-			if(comments[i].getParentId() == 0) {
-				printCommentsFor(i, 0, n, comments);
-			}
-		}
-	}
-
-	private static void printCommentsFor(int i, int level,
-	                                     int n, Comment[] comments) {
-		for(int j=0; j<level; j++) {
-			System.out.print("  ");
-		}
-		System.out.println("- " + comments[i].getId() +
-		                   " " + comments[i].getMsg());
-		for(int j=0; j<n; j++) {
-			if(comments[j].getParentId() == comments[i].getId()) {
-				printCommentsFor(j, level+1, n, comments);
+	private static void printComment(Comment comment, 
+	                                 int n, Comment[] comments) {
+		System.out.println("- " + comment.getId() +
+		                   " " + comment.getMsg());
+                                   
+		for(int i=0; i<n; j++) {
+			if(comments[j].getParentId() == comment.getId()) {
+				printComment(comments[j], n, comments);
 			}
 		}
 	}
 ```
+
+Please try to read the code carefully to understand what the code
+intends to do.  Basically, it works exactly as we said: it prints a
+line with the body of `comment` and then finds and prints all
+comments $$j$$ replying to `comment`.
+
+Method `printComment` looks like a typical Java method, with one
+exception: it calls itself.  See below:
+
+```java
+	private static void printComment(Comment comment, 
+	                                 int n, Comment[] comments) {
+		// ...
+		// ...     {
+			// ...     {
+				printComment(comments[j], n, comments);
+			// }
+		// }
+	}
+```
+
+This naturally comes out from our description of how to print a
+comment: To **print a comment**, we print it's body and **print all of
+its replying comments**.
+
+This type of methods (or functions, in general) is called recursive.
+It arrives naturally when you have definitions that are recursive,
+i.e., you define something in terms of itself.  As you can see, it can
+greatly reduce the complexity of the code.
+
+We are, though, missing another piece to run the code. We need a main
+caller that calls `printComment` on all top-level comments (whose
+`parentId` is zero).  Here it is.
+
+```java
+	private static void printAllComments(int n, Comment[] comments) {
+		for(int i=0; i<n; i++) {
+			if(comments[i].getParentId() == 0) {
+				printComment(i, n, comments);
+			}
+		}
+	}
+```
+
+Finally, we need to add indentation.  This can be done simply by
+passing another parameter `level` to the method.  Note that in
+`printComment`, when it calls itself, it tells the recursive call to
+increase the indentation by passing in `level + 1`.
+
+```java
+	private static void printAllComments(int n, Comment[] comments) {
+		for(int i=0; i<n; i++) {
+			if(comments[i].getParentId() == 0) {
+				printComment(comments[i], 0, n, comments);
+			}
+		}
+	}
+
+	private static void printComment(Comment comment, int level,
+	                                 int n, Comment[] comments) {
+		for(int j=0; j<level; j++) {
+			System.out.print("  ");
+		}
+		System.out.println("- " + comment.getId() +
+		                   " " + comment.getMsg());
+		for(int j=0; j<n; j++) {
+			if(comments[j].getParentId() == comments[i].getId()) {
+				printComment(comments[j], level + 1, n, comments);
+			}
+		}
+	}
+```
+
+You will see a lot of usage for recursion in this book and in computer
+science, in general.  We would like to note that while recursion looks
+pretty subtle if you try to peek inside the box to see the details, if
+you look at that with the right level of details, it can be pleasingly
+straight-forward.  We will discuss more about recursion, when we deals
+with data structures like binary trees and recursive algorithms such
+as Quick Sort and Merge Sort.
 
 ### Looking back: code reuse and class extraction
 
