@@ -15,7 +15,7 @@ The first one that we can extract is the output method.
 ```java
 	private static void printSortedComments(int n, Comment[] sortedComments) {
 		for(int i=0; i<n; i++) {
-			System.out.println("- " + sortedComments[i].getId() + 
+			System.out.println("- " + sortedComments[i].getId() +
 			                   " " + sortedComments[i].getMsg());
 		}
 	}
@@ -38,9 +38,9 @@ The original method becomes as follows.
 	private static void printComment(int n, Comment[] comments) {
 		Comment[] sortedComments = new Comment[n];
 		int sortedCount = 0;
-		
+
 		for(int p=0; p<n; p++) {
-			int replyCount = insertReplyingComments(p, n, comments, 
+			int replyCount = insertReplyingComments(p, n, comments,
 			                                        sortedComments, sortedCount);
 			sortedCount += replyCount;
 		}
@@ -53,13 +53,13 @@ extracted from `printComment`.  Note extra comments added to show
 where the code mainly manipulates `sortedComments` and `sortedCount`.
 
 ```java
-	private static int insertReplyingComments(int p, int n, Comment[] comments, 
-	                                          Comment[] sortedComments, 
+	private static int insertReplyingComments(int p, int n, Comment[] comments,
+	                                          Comment[] sortedComments,
 	                                          int sortedCount) {
 		int lastPos = -1;
 		boolean isFirstChild = true;
 		int addedCount = 0;
-	        
+
 		for(int i=0; i<n; i++) {
 			if(comments[i].getParentId() == p) {
 				if(isFirstChild) {
@@ -73,7 +73,7 @@ where the code mainly manipulates `sortedComments` and `sortedCount`.
 						}
 					}
 				}
-					
+
 				// ******************************************
 				// * insert comments[i] at location pos
 				// ******************************************
@@ -83,9 +83,9 @@ where the code mainly manipulates `sortedComments` and `sortedCount`.
 				}
 				sortedComments[pos] = comments[i];
 				sortedCount++;
-                                
+
 				addedCount++;
-					
+
 				lastPos = pos;
 				isFirstChild = false;
 			}
@@ -109,20 +109,20 @@ in class `CommentArray`.  The main codes for `printComment` and
 ```java
 	private static void printComment(int n, Comment[] comments) {
 		CommentArray sortedComments = new CommentArray(n);
-		
+
 		for(int p=0; p<n; p++) {
-			insertReplyingComments(p, n, comments, 
+			insertReplyingComments(p, n, comments,
 			                       sortedComments);
 		}
 		printSortedComments(n, sortedComments);
 	}
 
-	private static void insertReplyingComments(int p, int n, 
+	private static void insertReplyingComments(int p, int n,
 	                                          Comment[] comments,
 	                                          CommentArray sortedComments) {
 		int lastPos = -1;
 		boolean isFirstChild = true;
-	        
+
 		for(int i=0; i<n; i++) {
 			if(comments[i].getParentId() == p) {
 				if(isFirstChild) {
@@ -153,7 +153,7 @@ public class CommentArray {
 		this.size = size;
 		this.commentCount = 0;
 	}
-	
+
 	public int findById(int p) {
 		for(int i=0; i<commentCount; i++) {
 			if(comments[i].getId() == p) {
@@ -162,7 +162,7 @@ public class CommentArray {
 		}
 		return -1;
 	}
-	
+
 	public void insert(int i, Comment comment) {
 		for(int j=commentCount - 1; j >= i; j--) {
 			comments[j + 1] = comments[j];
@@ -202,11 +202,11 @@ public class InsertableArray {
                 this.itemCount = 0;
 		// ...
 	}
-	
+
 	public int findById(int p) {
 		// ... ** currently broken **
 	}
-	
+
 	public void insert(int i, Object item) {
 		// ...
 	}
@@ -248,7 +248,7 @@ public class InsertableArray<T> {
 		this.size = size;
 		this.itemCount = 0;
 	}
-	
+
 	public void insert(int i, T comment) {
 		for(int j=itemCount - 1; j >= i; j--) {
 			items[j + 1] = items[j];
@@ -256,7 +256,6 @@ public class InsertableArray<T> {
 		items[i] = comment;
 		itemCount++;
 	}
-
 
 	public T get(int i) {
 		return items[i];
@@ -285,7 +284,7 @@ Usage with lambda expression.
 ```java
 	// ...
 	if(isFirstChild) {
-		lastPos = sortedComments.findIndexBy((Comment c) -> (c.getParentId() == p));
+		lastPos = sortedComments.findIndexBy((Comment c) -> (c.getId() == p));
 	}
 	// ...
 ```
