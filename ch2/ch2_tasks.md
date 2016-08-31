@@ -140,3 +140,5 @@ Expected output for n50-3.in (first 10 lines):
 
 
 ### 2.2 Zooma 2 {#tasks-ch2-zooma-2}
+
+### 2.3 Zooma 3 {#tasks-ch2-zooma-3}

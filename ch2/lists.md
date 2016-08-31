@@ -91,11 +91,39 @@ manipulation of list items.
 
 ## A list of colored balls
 
-Let's start with a concrete problem.  
+Let's start with a concrete problem.  Consider a rather popular casual game
+called Zuma.  In this game, there is a list of enemy colored balls lining up to
+reach a secret gate.  You want to prevent that by shooting another set of
+colored balls to the list.  Because consecutive three balls of the same color
+explode, you can potentially destroy all the enemy balls.
+
+We will look at the simpler version of the game, where we can shoot the balls,
+but the balls remain in the list.  In this tasks, there are $$n$$ enemy colored
+balls and you want to shoot $$m$$ colored balls.  To be precise, the enemy balls
+are referred to as ball $$1$$ to ball $$n$$, and the balls you will shoot are
+referred to as ball $$n+1$$ to ball $$n+m$$.  For each of your $$i$$-th ball,
+for $$1\leq i\leq m$$ you shoot into the list, it will land right after
+ball $$p[i]$$.  (Note that $$i$$ here is not referring to the ball numbers, as
+your $$i$$-th ball is numbered $$n+i$$.) You want to know the final list of
+balls.
+
+Consider the following example.
+
+TODO: add example
 
 **Related task:** [Zooma 1](ch2_tasks.md#tasks-ch2-zooma-1)
 
-## Array implementation
+One can deal with this task by just simulating the system and output the final
+result.  Starting with a list of $$n$$ numbers from $$1$$ to $$n$$.  We iterate
+the array $$p[i]$$ and insert ball number $$n+i$$ into the sequence right after
+$$p[i]$$.  To do so, we need to look up where $$p[i]$$ is in the sequence and
+insert $$i+n$$ right after it.
+
+### Array implementation
+
+Using a `InsertableArray` from last chapter, we can implement a solution to the
+task as follows.  Note that `p[i]` here is a 0-indexed array; thus, $$p[1]$$ in
+the task is stored in `p[0]`, and so on.
 
 ```java
 InsertableArray<Integer> outArray = new InsertableArray<Integer>(n + m);
@@ -116,6 +144,20 @@ for(int i=0; i<n+m; i++) {
   System.out.println(outArray.get(i));
 }
 ```
+
+The solution works fine.  Next, we need to analyze its running time to see how
+the program deals with the cases with large $$n$$ and $$m$$.  To simplify our
+analysis, assume that $$n=m$$.  Clearly, the first for loop runs in
+time $$O(n)$$ and the second for loop runs in time $$O(n+m)=O(n)$$.  The main
+working loop for this solution is the middle for loop.  Although the loop itself
+runs for only $m$ iterations, we also have to consider the running times of
+operations inside the loop.  From the last chapter, we knows that both `findIndex`
+and `insert` runs in time at most linear on the number of elements in the array;
+in this case, they both run in time $$O(n+m)=O(n)$$.  Thus, the main loop runs
+in time $$O(n^2)$$, which dominates the total running time of the algorithm.
+
+In this chapter, we will learn a new data structure that can speed up the
+solution to run in time $$O(n)$$.
 
 ## Linked lists
 
@@ -206,3 +248,5 @@ for(int i=0; i<m; i++) {
 ## List ADT
 
 ## Linked List Implementation
+
+## Doubly Linked Lists
