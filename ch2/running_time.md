@@ -7,8 +7,10 @@ which method is the fastest to solve a particular problem, this may be the best
 way.  However, there are cases where we can tell, even before implementing the
 solutions, which solution should run faster, when the input is large.  The
 ability to analyze (even roughly) the efficiency of the approaches before having
-to spend time implementing the solutions is extremely useful.  In this section,
-we will discuss the techniques to analyze solutions' running times.
+to spend time implementing the solutions is extremely useful.  In this chapter,
+we will discuss the basic techniques to analyze solutions' running times.  In
+later chapters, more techniques and examples will be also introduced to deal
+with particular data structures and algorithms.
 
 ## Algorithms and their implementations
 
@@ -64,7 +66,43 @@ TODO: Do we have to write down algorithms before writing the implementations
 
 ## Best cases, worst cases, average cases
 
+If the algorithms take input parameters, very often their running times depend
+on these input parameters.  
+
+As an example, both algorithms `product1` and `product2` runs at roughly the
+same speed when $$b=1$$, because the for loop is executed only once.  This is
+when `product1` runs the fastest.  If we want to analyze the running time but
+only consider this easy case, the result seems not very useful and even
+misleading.
+
+Since the running time can vary a lot based on the input, we have to choose the
+class of inputs to analyze carefully.  Choosing cases when the algorithm perform
+fastest is referred to as the *best case analysis*.  On the other hand, if we
+perform the analysis assuming the worst possible scenarios, this analysis is
+referred to as the *worst case analysis*.  We want to be on the safe side when
+applying the analysis result, so we usually prefer worst case analysis of
+algorithm behaviors.
+
+It is also possible to consider typical cases.  These type of analysis is called
+*average case analysis*.  To get a precise result, we have to start with the
+definition of typical inputs of the algorithm, usually modeled with probability
+theory.  In this course, we will not perform average cases analysis that much.
+
 ## Factors affecting running times
+
+TODO: write this section.
+
+Examples of factors are:
+
+* Factors that are unknown before implementing the algorithm
+  * Programming languages
+  * Programming style
+* Factors that are unknown even when having the code that implements the algorithm
+  * Computer hardwares
+  * Other running processes in the computers
+
+Therefore, if we want to analyze the algorithm as a mathematical object, we have
+to accept that we cannot get accurate answers, but only partial answers.
 
 ## Running times as functions of the input sizes
 
@@ -75,6 +113,23 @@ still extremely useful.  Consider previous examples of product algorithms, that
 given two positive integers $$a$$ and $$b$$, calculates the product $$a\cdot
 b$$.
 
+## Examples
 
+### Multiplication algorithms
+
+### Testing if an array is sorted
+
+### `InsertableArray` operations
 
 ## Formal definitions
+
+This section provides formal definitions for the $$O$$-notations.  Given
+functions $$f(n)$$ and $$g(n)$$ over natural numbers, we say that $$f(n)$$
+is $$O(g(n))$$ if there exists constants $$c$$ and $$n_0$$ such that
+
+$$f(n) \leq c\cdot g(n),$$
+
+when $$n \geq n_0$$.  Informally, this means that $$f$$ does not grow faster
+than $$g$$ (or, $$f$$ can be upper bounded by $$g$$).
+
+### Examples

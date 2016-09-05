@@ -7,3 +7,5 @@
 * [Running times](ch2/running_time.md)
 * [Lists](ch3/lists.md)
   * [Programming Tasks](ch3/ch3_tasks.md)
+* [Queues and stacks](ch4/stacks_queues.md)
+  * [Programming Tasks](ch4/ch4_tasks.md)

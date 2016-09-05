@@ -147,14 +147,50 @@ for(int i=0; i<n+m; i++) {
 
 The solution works fine.  Next, we need to analyze its running time to see how
 the program deals with the cases with large $$n$$ and $$m$$.  To simplify our
-analysis, assume that $$n=m$$.  Clearly, the first for loop runs in
-time $$O(n)$$ and the second for loop runs in time $$O(n+m)=O(n)$$.  The main
-working loop for this solution is the middle for loop.  Although the loop itself
-runs for only $m$ iterations, we also have to consider the running times of
-operations inside the loop.  From the last chapter, we knows that both `findIndex`
-and `insert` runs in time at most linear on the number of elements in the array;
-in this case, they both run in time $$O(n+m)=O(n)$$.  Thus, the main loop runs
-in time $$O(n^2)$$, which dominates the total running time of the algorithm.
+analysis, assume that $$n=m$$.  
+
+There are 3 for loops in this code.  Clearly, the third for loop runs in time $$O(n+m)=O(n)$$.  
+The first for loop is fairly interesting.  From the previous
+chapter, we know that `insert` in `InsertableArray` runs in
+worst-case $$O(n)$$ time when there are $$n$$ elements in the array.
+However, the way we use `insert` here is actually its best case, i.e.,
+we only `insert` new element as the last element in the array;
+therefore, the running time in this case
+is $$O(1)$$.  The first loop then runs in term $$O(n)$$.
+
+The main working loop for this solution is the middle for loop.  Let's consider
+it in details.
+
+```java
+// --- The loop runs for m iterations.  We have to figure out
+//     the running time for each iteration.
+for(int i=0; i<m; i++) {
+  // --- these two statement runs in 2 time units: O(1) time
+  int ballNumber = n + i + 1;
+  int pred = p[i];
+
+  // --- In the worst case, findIndex runs in time linear
+  //     on the number of elements in the array.
+  //     Overall the execution of the loop, the number of elements
+  //     are at most n + m.  Thus, this line runs in time O(n+m).
+  int pos = outArray.findIndex((Integer num) -> (num == pred));
+
+  // --- As discussed, this statement runs in time O(n+m) as well.
+  outArray.insert(pos + 1, ballNumber);
+}
+```
+
+Although the loop itself runs for only $$m$$ iterations, we also have to
+consider the running times of operations inside the loop.   The first two
+statements runs in $$O(1)$$ time, per iteration.
+
+From the last chapter, we knows that both `findIndex` and `insert` runs in time
+at most linear on the number of elements in the array.  While the number of
+elements in the array is not constant in every iteration, we can use the largest
+one, i.e., $$n+m$$ elements.  Therefore both statements
+run in time $$O(n+m)=O(n)$$.  Thus, the main loop runs in
+time $$O(n^2)$$, which dominates
+the total running time of the algorithm.
 
 In this chapter, we will learn a new data structure that can speed up the
 solution to run in time $$O(n)$$.
@@ -223,6 +259,47 @@ while(currentNode != null) {
   currentNode = currentNode.next;
 }
 ```
+
+##### Running time
+
+First for loop runs for $$n$$ iterations.  Each iteration takes $$O(1)$$ time;
+thus, the total running time for the loop is $$O(n)$$.
+
+The last while loop iterates through the list with $$n+m$$ elements.  Thus, the
+running time is $$O(n+m)$$, the number of elements in the linked list.
+
+The main for loop runs for $$m$$ iterations.  Let's look at the code.
+
+```java
+// --- The main loop runs for m iterations.
+for(int i=0; i<m; i++) {
+  // --- All statements outside the while loop run in constant time;
+  //     thus, the total running time (outside while loop) is O(1).
+  int ballNumber = n + i + 1;
+  int pred = p[i];
+
+  ListNode newNode = new ListNode(ballNumber);
+
+  ListNode currentNode = head;
+
+  // --- This while loop iterates through the list.  While we do no
+  //     know how many nodes we traverse, there cannot be more than
+  //     m + n nodes.  Thus, we can say that the loop runs in O(n+m) time.
+  while(currentNode != null) {
+    if(currentNode.val == pred) {
+      break;
+    }
+    currentNode = currentNode.next;
+  }
+
+  newNode.next = currentNode.next;
+  currentNode.next = newNode;
+}
+```
+
+Since the inner code runs in time $$O(n+m) = O(n)$$ and the for loop runs
+in $$m$$ times, the total running time is $$O((n+m)\cdot(m))=O(n^2)$$.
+
 
 #### An efficient implementation
 
