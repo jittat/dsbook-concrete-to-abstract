@@ -303,6 +303,8 @@ in $$m$$ times, the total running time is $$O((n+m)\cdot(m))=O(n^2)$$.
 
 #### An efficient implementation
 
+We can avoid searching the linked list by keeping `ListNode` in an array.
+
 ```java
 ListNode[] nodes = new ListNode[n + m + 1];
 
@@ -322,8 +324,194 @@ for(int i=0; i<m; i++) {
 // ...
 ```
 
+It is clear that the inner loop runs in time $$O(n+m)$$, and the algorithm runs
+in time $$O(n+m)$$.
+
 ## List ADT
 
+We use `ListNode` to implement a linked list in the last example.  Note that we
+directly manipulate the list and the low-level codes for list processing appear
+throughout our main code.  These messy codes cannot be reused easily.  We will
+try to extract reusable codes from the working code in the previous example.
+
+We shall extract a class from the codes.  To do so, we have to define class
+interface (or API) so that our code client can use our class code.   Although we
+can define our class any way we like, it is worthwhile to look at standard
+collection library for linked list as a guideline.
+
+### Java collections
+
+Let's take a look at interface `List<E>` from [Java 7](https://docs.oracle.com/javase/7/docs/api/java/util/List.html).   The following table lists interesting methods on the list interface.
+
+| Categories | Methods |
+|------------|----------------------------------|
+| access     | `get(int index)` |
+| size       | `size()` |
+| test       | `isEmpty()`, `contains`, `containsAll`, `equals` |
+| add        | `add(E e)` - *add element at the end*, `add(int index, E e)`, `addAll` |
+| remove     | `remove(int index)`, `remove(Object o)`, `removeAll` |
+| iterators  | `iterator()`, `listIterator()` |
+
+Note that the interface provides common operations a list provides, but it does
+not provide a way to traverse the list itself in this interface.  However,
+following the [iterator
+pattern](https://en.wikipedia.org/wiki/Iterator_patternhttps://en.wikipedia.org/wiki/Iterator_pattern),
+the list interface provides access to elements by iterators with methods
+`iterator` and `listIterator`.   You can think of an iterator as a reference to
+a list node that we can use to traverse elements in the list in the same way
+that we use `currentNode` (of type `ListNode`) to search for elements in the previous example.
+
+The following methods are provided by `listIterator`.
+
+| Categories | Methods |
+|------------|---------|
+| movement | `next()`, `previous()` |
+| test | `hasPrevious()`, `hasNext()` |
+| manipulation | `add(E e)`, `remove()`, `set(E e)` |
+| index | `nextIndex()`, `previousIndex()` |
+
+Note that `listIterator` can move backwards.  This is a operation that we cannot
+support with the current linked list structure that we have.  In later section
+where we discuss doubly linked lists, we will see how to do that.
+
+### Our list interface
+
+We provides many operations for our linked list.  Our first implementation will
+not provide list access with iterators, but allow direct access to list nodes
+with class similar to `ListNode`.  We also provide more methods for dealing with
+elements at the beginning and at the end of the lists.  In [next
+section](list.md#list-iterator-pattern), we wrap the node references inside
+iterators.
+
+| Methods | Descriptions |
+|---------|--------------|
+| `add(E e)` | add element `e` at the end of the list |
+| `addHead(E e)` | add element at the head of the list |
+| `removeHead()` | remove the first element from the list |
+| `getHead()` | return the first list node |
+| `getTail()` | return the last list node |
+| `addAfter(Node node, E e)` | add an element after a `node` |
+| `removeAfter(Node node)` | remove a node after `node`|
+
 ## Linked List Implementation
+
+### Lists of integers
+
+The following code is a class for linked lists of integers.  We move class
+`ListNode` to be an inner class in class `LinkedList`.  We also hide direct
+access to `next` references and `val`, so that users of class `LinkedList`
+cannot perform reference manipulation.
+
+```java
+public class LinkedList {
+	public class Node {
+		private int val;
+		private Node next = null;
+
+		public Node(int val) {
+			this.val = val;
+			this.next = null;
+		}
+
+		public Node() {
+			this(0);
+		}
+
+		public Node getNext() { return next; }
+		public int getVal() { return val; }
+		public void setVal(int v) { val = v; }
+	}
+  // ...
+}
+```
+
+As in the previous example, we need to keep two references to the first and the
+last nodes of the list, and initialize them to `null`.
+
+```java
+public class LinkedList {
+	private Node head = null;
+	private Node tail = null;
+	private int size = 0;
+
+	public LinkedList() {
+		head = tail = null;
+		size = 0;
+	}
+  //..
+}
+```
+
+Let's start by writing `isEmpty`,`size`, and other access methods.
+
+```java
+  public boolean isEmpty() {
+    return tail != null;
+  }
+
+  public int size() {
+    return size;
+  }
+
+  public Node getHead() {
+    return head;
+  }
+
+  public Node getTail() {
+    return tail;
+  }
+```
+
+The `add` method can be directly extracted from the code in zooma.
+
+```java
+public Node add(int v) {
+  Node newNode = new Node(v);
+
+  if(! isEmpty()) {
+    tail.next = newNode;
+    tail = newNode;
+  } else {
+    head = tail = newNode;
+  }
+
+  size++;    	
+  return newNode;
+}
+```
+
+Method `removeAfter` checks if `node` has the next node, then adjusts the next
+pointer accordingly.
+
+```java
+	public void removeAfter(Node node) {
+		if(node.next != null) {
+			node.next = node.next.next; 		
+			size--;
+		}
+	}
+```
+
+Method `addHead` creates a new node, points its next reference to the recent
+`head`, and updates the `head` reference to this node.
+
+```java
+	public Node addHead(int v) {
+		if(isEmpty()) {
+			return add(v);
+		} else {
+	    	Node newNode = new Node(v);
+	    	newNode.next = head;
+	    	head = newNode;
+	    	return newNode;
+		}
+	}
+```
+
+Method `removeHead` and `addAfter` are left out as exercises to the reader.
+
+### Hiding the nodes: the iterator pattern {#list-iterator-pattern}
+
+### Generic linked list
 
 ## Doubly Linked Lists
