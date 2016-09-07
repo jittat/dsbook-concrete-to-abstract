@@ -446,7 +446,7 @@ Let's start by writing `isEmpty`,`size`, and other access methods.
 
 ```java
   public boolean isEmpty() {
-    return tail != null;
+    return tail == null;
   }
 
   public int size() {
