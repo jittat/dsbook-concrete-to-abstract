@@ -406,7 +406,7 @@ cannot perform reference manipulation.
 public class LinkedList {
 	public class Node {
 		private int val;
-		private Node next = null;
+		protected Node next = null;
 
 		public Node(int val) {
 			this.val = val;
