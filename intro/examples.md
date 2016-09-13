@@ -19,12 +19,12 @@ types of objects, monsters and players, and a radius $$R$$ and you
 want to find, for a given player, all monsters which are within
 distance $$R$$ from this player.
 
-**Related task:** [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search)
+**Related task:** [Nearby Search](intro_tasks.md#tasks-intro-nearby-search)
 
 To encourage the reader to think about the problems, try out various
 solutions, and experiment with the running times, we usually provide a
 programming task formulated from a problem like this one.  Head to the
-task [Nearby Search](ch1_tasks.md#tasks-ch1-nearby-search) to read the
+task [Nearby Search](intro_tasks.md#tasks-intro-nearby-search) to read the
 task statement and try to implement a solution before you read
 further.
 
@@ -91,17 +91,17 @@ arguments.)
 
 	public static void main(String [] args) {
 		int m,n;
-		
+
 		n = Integer.parseInt(args[0]);
 		m = Integer.parseInt(args[1]);
-		
+
 		Monster [] monsters = randomMonster(m);
 		double r = GAME_WIDTH * 0.01;
-		
+
 		int totalCount = 0;
-		
+
 		for(int i=0; i<n; i++) {
-			Player p = new Player(Math.random() * GAME_WIDTH, 
+			Player p = new Player(Math.random() * GAME_WIDTH,
 			                      Math.random() * GAME_WIDTH);
 			totalCount += countNearbyMonsters(p, monsters, r);
 		}
@@ -178,9 +178,9 @@ everything right.  We will try to tackle it using many approaches.
 But before that, it will be very useful if the reader would stop for a
 few minutes to think about the problem.  Also, it would be great to
 try to solve it before moving on to see the solutions.  Check out the
-task: [Status comments](ch1_tasks.md#tasks-ch1-comments).
+task: [Status comments](intro_tasks.md#tasks-intro-comments).
 
-**Related task:** [Status comments](ch1_tasks.md#tasks-ch1-comments)
+**Related task:** [Status comments](intro_tasks.md#tasks-intro-comments)
 
 In what follows, we shall discuss three approaches for solving this
 task.  Your answer may fall into one of these approaches. The first
@@ -262,11 +262,11 @@ number.  The quick and dirty solution would be as follows.
 			printComment(currentComment);
 			Comment replyingComment = findReplyingComment(currentComment.getId(), 1,
 			                                              n, comments);
-			
+
 			if(replyingComment != null) {
 				parentComment = currentComment;
 				parentReplyNumber = 1;
-				
+
 				currentComment = replyingComment;
 			} else {
 				currentComment = findReplyingComment(parentComment.getId(),
@@ -327,7 +327,7 @@ The general structure of the method (with some step left out) is as follows.
 	private static void printComment(int n, Comment[] comments) {
 		Comment[] sortedComments = new Comment[n];
 		int sortedCount = 0;
-		
+
 		for(int p=0; p<n; p++) {
 			for(int i=0; i<n; i++) {
 				if(comments[i].getParentId() == p) {
@@ -335,7 +335,7 @@ The general structure of the method (with some step left out) is as follows.
 				}
 			}
 		}
-		
+
 		// print all comments in sortedComments
 	}
 ```
@@ -348,11 +348,11 @@ TODO: explain this code. make sure to note that when p=0, lastPos is intentional
 	private static void printComment(int n, Comment[] comments) {
 		Comment[] sortedComments = new Comment[n];
 		int sortedCount = 0;
-		
+
 		for(int p=0; p<n; p++) {
 			int lastPos = -1;
 			boolean isFirstChild = true;
-			
+
 			for(int i=0; i<n; i++) {
 				if(comments[i].getParentId() == p) {
 					if(isFirstChild) {
@@ -363,22 +363,22 @@ TODO: explain this code. make sure to note that when p=0, lastPos is intentional
 							}
 						}
 					}
-					
+
 					int pos = lastPos + 1;
 					for(int j=sortedCount - 1; j>=pos; j--) {
 						sortedComments[j+1] = sortedComments[j];
 					}
 					sortedComments[pos] = comments[i];
 					sortedCount++;
-					
+
 					lastPos = pos;
 					isFirstChild = false;
 				}
 			}
 		}
-		
+
 		for(int i=0; i<n; i++) {
-			System.out.println("- " + sortedComments[i].getId() + 
+			System.out.println("- " + sortedComments[i].getId() +
 			                   " " + sortedComments[i].getMsg());
 		}
 	}
@@ -401,11 +401,11 @@ and then print all comments $$j$$ replying to comment $$i$$.
 This gives a fairly straight-forward implementation of `printComment`.
 
 ```java
-	private static void printComment(Comment comment, 
+	private static void printComment(Comment comment,
 	                                 int n, Comment[] comments) {
 		System.out.println("- " + comment.getId() +
 		                   " " + comment.getMsg());
-                                   
+
 		for(int i=0; i<n; j++) {
 			if(comments[j].getParentId() == comment.getId()) {
 				printComment(comments[j], n, comments);
@@ -423,7 +423,7 @@ Method `printComment` looks like a typical Java method, with one
 exception: it calls itself.  See below:
 
 ```java
-	private static void printComment(Comment comment, 
+	private static void printComment(Comment comment,
 	                                 int n, Comment[] comments) {
 		// ...
 		// ...     {
@@ -493,4 +493,3 @@ you look at that with the right level of details, it can be pleasingly
 straight-forward.  We will discuss more about recursion, when we deals
 with data structures like binary trees and recursive algorithms such
 as Quick Sort and Merge Sort.
-

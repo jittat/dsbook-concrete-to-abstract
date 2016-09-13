@@ -1,6 +1,6 @@
 ## Chapter 3: Programming Tasks
 
-### 3.1 Zooma 1 {#tasks-ch3-zooma-1}
+### 3.1 Zooma 1 {#tasks-lists-zooma-1}
 
 This task is motivated by [Zuma](https://en.wikipedia.org/wiki/Zuma_%28video_game%29), a video game by PopCap Games.
 
@@ -48,7 +48,7 @@ If you shoot your forth ball to the location after ball 5, the sequence becomes
 and this is the final sequence.
 
 **Note:** In this version, the colors of the balls are not relevant because
-balls do not disappear.  In next versions of the task (see [Zooma 2](#tasks-ch3-zooma-2)), there are rules about the disappearance of
+balls do not disappear.  In next versions of the task (see [Zooma 2](#tasks-lists-zooma-2)), there are rules about the disappearance of
 consecutive balls with the same color.
 
 ### Input
@@ -139,6 +139,6 @@ Expected output for n50-3.in (first 10 lines):
 ```
 
 
-### 3.2 Zooma 2 {#tasks-ch3-zooma-2}
+### 3.2 Zooma 2 {#tasks-lists-zooma-2}
 
-### 3.3 Zooma 3 {#tasks-ch3-zooma-3}
+### 3.3 Zooma 3 {#tasks-lists-zooma-3}

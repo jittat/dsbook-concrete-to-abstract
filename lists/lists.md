@@ -111,7 +111,7 @@ Consider the following example.
 
 TODO: add example
 
-**Related task:** [Zooma 1](ch3_tasks.md#tasks-ch3-zooma-1)
+**Related task:** [Zooma 1](lists_tasks.md#tasks-lists-zooma-1)
 
 One can deal with this task by just simulating the system and output the final
 result.  Starting with a list of $$n$$ numbers from $$1$$ to $$n$$.  We iterate
