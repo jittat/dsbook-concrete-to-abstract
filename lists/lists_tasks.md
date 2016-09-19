@@ -51,17 +51,17 @@ and this is the final sequence.
 balls do not disappear.  In next versions of the task (see [Zooma 2](#tasks-lists-zooma-2)), there are rules about the disappearance of
 consecutive balls with the same color.
 
-### Input
+#### Input
 
 * First line: $$n$$ and $$m$$
 * Next $$n$$ lines: for $$1 \leq i\leq n$$, line $$1 + i$$ specifies one integer `c[i]` the color of ball $$i$$.
 * Next $$m$$ lines: for $$1 \leq j \leq m$$, line $$1 + n + j$$ specifies two integers `d[j]` and `p[j]`.  `d[j]` is the color of ball $$n+j$$ (this is your $$j$$-th ball), and `p[j]` is the number of the ball right after which you shoot this ball into the sequence.  Note that `p[j]` $$<$$ $$n + j$$.
 
-### Output
+#### Output
 
 Your program should print $$n+m$$ integers which are the ball numbers in the final sequence.
 
-### Example
+#### Example
 
 This is the same example with colors: G = 1, B = 2, Y = 3, R = 4.
 
@@ -94,7 +94,7 @@ This is the same example with colors: G = 1, B = 2, Y = 3, R = 4.
 9
 ```
 
-### Test data
+#### Test data
 
 Download at: [http://theory.cpe.ku.ac.th/~jittat/courses/01204212/tasks/zooma1/](http://theory.cpe.ku.ac.th/~jittat/courses/01204212/tasks/zooma1/)
 

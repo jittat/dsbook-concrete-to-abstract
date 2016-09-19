@@ -1,9 +1,9 @@
-## Chapter 5: Programming Tasks
+## Chapter 4: Programming Tasks
 
-### 5.1 Job queue 1
+### 4.1 Job queue 1
 
-### 5.1 Job queue 2
+### 4.1 Job queue 2
 
-### 5.3 Parentheses
+### 4.3 Parentheses
 
-### 5.4 Expressions
+### 4.4 Expressions

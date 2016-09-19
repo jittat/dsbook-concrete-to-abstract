@@ -339,7 +339,7 @@ interface (or API) so that our code client can use our class code.   Although we
 can define our class any way we like, it is worthwhile to look at standard
 collection library for linked list as a guideline.
 
-### Java collections
+### Java collections {#list-java-collection}
 
 Let's take a look at interface `List<E>` from [Java 7](https://docs.oracle.com/javase/7/docs/api/java/util/List.html).   The following table lists interesting methods on the list interface.
 
