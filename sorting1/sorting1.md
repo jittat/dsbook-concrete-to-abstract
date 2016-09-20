@@ -251,14 +251,149 @@ smaller one).  Later, we can focus on the second step, which crucial when we
 want to analyze the running time.  Paying too much attention to the mechanics of
 recursion (the 2nd aspect) often make understanding recursive program very hard.
 
+## Two different approaches for sorting
+
+We are given a linked list of $$n$$ integers.  We want to sort them.   We will
+derive two sorting algorithms by thinking recursively.  
+
+We start by identifying the base case, i.e., the case where sorting is extremely
+easy.  This is when the list is empty: if you are given an empty list, the
+sorted result is also an empty list.  (You can also take the case when the list
+has only one element, but if we want an algorithm that works for any input, we
+have to deal with an empty list anyway.)
+
+To start thinking recursively, we assume that we can solve the same problem with
+smaller inputs and try to see if we can use that fact to solve the original
+problem.
+
+Thus, we ask the following question:
+
+> Can we sort $$n$$ integers, if we know how to sort $$n-1$$ integers?
+
+While there are many ways to do that, we consider only two natural ideas.
+
+First, we can take any element $$x$$ out of the list, sort the remaining $$n-1$$
+elements in the list, and try to put $$x$$ in the right location in the sorted
+list.  See an illustrating example below.
+
+```
+Input: 10, 23, 14, 27, 7, 19, 3, 1, 15, 2
+  1) Take 10 out.
+     Remaining list: 23, 14, 27, 7, 19, 3, 1, 15, 2
+  2) Sort the remaining list:
+     Result: 1, 2, 3, 7, 14, 15, 19, 23, 27
+  3) Put 10 in the right place.
+     Result: 1, 2, 3, 7, [10], 14, 15, 19, 23, 27       
+```
+
+The previous approach focuses on working *after* the remaining list is sorted.
+If we work harder to select an integer $$x$$ to be taken out, we can save a lot
+of work to be done afterwards.  If we want put back $$x$$ easily, we can either
+select the smallest or the largest integer.  The following illustrates the
+point.
+
+```
+Input: 10, 23, 14, 27, 7, 19, 3, 1, 15, 2
+  1) Take 1, the minimum integer out.
+     Remaining list: 10, 23, 14, 27, 7, 19, 3, 15, 2
+  2) Sort the remaining list:
+     Result: 2, 3, 7, 10, 14, 15, 19, 23, 27
+  3) Put 1 in the right place (the beginning of the list).
+     Result: [1], 2, 3, 7, 10, 14, 15, 19, 23, 27       
+```
+
+The first approach leads to an insertion sort and the second approach gives a
+selection sort.
+
+Let's write the skeleton of both methods.
+
+```java
+public static LinkedList<Integer> sort(LinkedList<Integer> inList) {
+  if(inList.size() == 0) {
+    return new LinkedList<Integer>();
+  }
+
+  // find x to remove
+  int x = ...
+
+  LinkedList<Integer> outList = sort(inList);
+
+  // put x into outList
+  // ...
+
+  return outList;
+}
+```
+
 ## Inserting sort
 
-## Inserting sort: iterative version
+We will focus on two major steps left out from the skeleton.  It is easy to take
+$$x$$ out of the list.  We simply take the first element out.
 
-## Array implementation
+```java
+  int x = inList.removeFirst();
+```
+
+To place $$x$$ to the right location requires some work.  Also, the list
+iterator in Java is fairly limited, as you cannot get an element without having
+to move.  In the code we have to move `next` and `previous` to return to the
+right location.
+
+```java
+  if(outList.size() == 0) {
+    outList.add(x);
+    return outList;
+  }
+
+  ListIterator<Integer> i = outList.listIterator();
+  while(i.hasNext()) {
+    if(i.next() >= x) {
+      i.previous();
+      break;
+    }
+  }
+  i.add(x);
+  return outList;
+```
+
+Note that at the top-most level of the recursion, we only work with one element.
+The rest are handled at the deeper levels of the recursion.
 
 ## Selection sort
 
-## Selection sort: iterative version
+We turn our focus to the selection sort.  Let's find the smallest
+element $$x$$ and remove it.
 
-## Array implementation
+```java
+  int x = inList.getFirst();
+  int minIndex = 0;
+
+  ListIterator<Integer> i = inList.listIterator();
+  while(i.hasNext()) {
+    int y = i.next();
+    if(y < x) {
+      x = y;
+      minIndex = i.previousIndex();
+    }
+  }
+  inList.remove(minIndex);
+```
+
+Again note that because of the way Java iterator works, we have to use
+`previousIndex` to get an index of the element $$y$$ recently obtained by
+calling `next`.
+
+After the recursive call, putting $$x$$ back to the list is easy.
+
+```java
+  outList.addFirst(x);
+```
+
+## Running times
+
+## Iterative versions
+
+The recursive versions of insertion sort and selection sort presented in the
+previous sections are not standard ways to implement both algorithms
+
+## Array implementations
