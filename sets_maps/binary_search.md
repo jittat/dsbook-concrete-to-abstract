@@ -1,0 +1,2 @@
+## Binary search
+## Static implementation

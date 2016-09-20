@@ -11,3 +11,6 @@
   * [Programming Tasks](queues_stacks/qs_tasks.md)
 * [Sorting 1](sorting1/sorting1.md)
   * [Programming Tasks](sorting1/sorting1_tasks.md)
+* [Sets and maps](sets_maps/sets_maps.md)
+  * [Binary search](sets_maps/binary_search.md)
+  * [Programming Tasks](sets_maps/sm1_tasks.md)

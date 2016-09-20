@@ -1,4 +1,4 @@
-## Chapter 5 Sorting 1
+## Chapter 5: Programming tasks
 
 ### 5.1 Integer sorting
 
