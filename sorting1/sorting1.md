@@ -391,6 +391,75 @@ After the recursive call, putting $$x$$ back to the list is easy.
 
 ## Running times
 
+### Insertion sort
+
+To formally analyze the running time, we need to use a running time recurrence,
+the topic that we shall cover in the next chapter.  For now, let's make an
+informal argument.  We consider the worst-case running time.  From the code, to
+sort $$n$$ integers, we have to
+
+* take the first element $$x$$ out of the list,
+* sort $$n-1$$ integers, and
+* insert $$x$$ back into the sorted list of $$n-1$$ elements.
+
+The first step clearly takes $$O(1)$$ time.  The last step iterates through a
+list of $$n-1$$ elements.  In the worst-case, we have to look through the list
+and that takes $$O(n)$$ time.
+
+The conceptually puzzling step is the second one.  We will try to argue about it
+by unrolling the recursive calls.  Let's unroll them for a few steps:
+
+```
+ sort(list with n elements):
+    take the first element x1 out of the list of n elements
+    [1st-level] recursive call to sort(list with n-1 elements):
+       take the first element x2 out of the list of n-1 elements
+       [2nd-level] recursive call to sort(list with n-2 elements):
+          take the first element x3 out of the list of n-2 elements
+          [3rd-level] recursive call to sort(list with n-3 elements):
+             take the first element x4 out of the list of n-3 elements
+             [4th-level] recursive call to sort(list with n-4 elements)
+                ...
+             insert x4 into the sorted list of x-4 elements
+          insert x3 into the sorted list of x-3 elements
+       insert x2 into the sorted list of x-2 elements
+    insert x1 into the sorted list of x-1 elements
+```
+
+Using the $$O$$-notations in this case can easily cause an error, so let's work
+without the $$O$$-notation.  Let's assume that the worst-case running time of
+the first and the second steps is at most $$cn$$ units of time, for some
+constant $$c$$, for an input list with $$n$$ elements.
+
+In the first level of the recursive call, the input list has $$n-1$$ elements.
+Thus the first and the third steps in that level run for at
+most $$c(n-1)$$ time.  For the second level of the call,
+the input list has $$n-2$$ elements;
+thus the running time for the first and the third steps is at most $$c(n-2)$$.
+This goes on for $$n-1$$ levels when the list eventually gets emptied.
+
+If we sum up the running time across all levels we have that the algorithm runs
+in time at most
+
+$$cn + c(n-1) + c(n-2) + c(n-3) + \cdots + c(2) + c(1) = c\frac{n(n-1)}{2} = O(n^2)$$
+
+### Selection sort
+
+The recursive calls of the selection sort follows the same structure.  These are
+3 main steps of the algorithm.
+
+* take the minimum element $$x$$ out of the list,
+* sort $$n-1$$ integers, and
+* insert $$x$$ back to the beginning of the list.
+
+The first step iterates through all the elements in the list; thus the running
+time is $$O(n)$$ for an $$n$$-element list.  The third step takes $$O(1)$$ time
+because we use a linked list.  Thus, the time outside the recursive calls when
+the input list has $$n$$ elements is at most $$cn$$ for some constant $$c$$.
+
+The same argument for the insertion sort works here as well.  Thus, the
+selection sort runs in time $$O(n^2)$$.
+
 ## Iterative versions
 
 The recursive versions of insertion sort and selection sort presented in the
