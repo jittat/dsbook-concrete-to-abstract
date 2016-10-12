@@ -14,3 +14,5 @@
 * [Sets and maps](sets_maps/sets_maps.md)
   * [Binary search](sets_maps/binary_search.md)
   * [Programming Tasks](sets_maps/sm1_tasks.md)
+* [Binary Search Trees](binary_search_trees/bst.md)
+  * [Balanced Binary Search Trees](binary_search_trees/balanced_bst.md)
