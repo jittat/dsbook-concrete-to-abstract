@@ -88,6 +88,23 @@ private void insert(TreeNode node, int val) {
 }
 ```
 
+## Deletion in binary search trees
+
 ## Implementing the set interface
 
 ## Implementing the map interface
+
+## Running times
+
+The running times on operations on binary search trees depend on the number of
+nodes in the trees one has to consider.  In most cases, basic operations require
+one to start from the root and follow down the tree to reach some particular
+node.  Therefore, if there is a node in a tree which is very deep
+(very far from the root), it can take a long time if one have to go from the
+root to reach this node.
+
+In a binary tree, the **depth** of a node is the number of edges from the root
+to that node.  The time it takes to find a key in the tree is the depth of the
+node containing that key.
+
+### A very bad binary search trees

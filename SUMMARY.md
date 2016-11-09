@@ -16,3 +16,5 @@
   * [Programming Tasks](sets_maps/sm1_tasks.md)
 * [Binary Search Trees](binary_search_trees/bst.md)
   * [Balanced Binary Search Trees](binary_search_trees/balanced_bst.md)
+* [Priority queues](priority_queues/priority_queues.md)
+* [Sorting 2](sorting2/sorting2.md)
